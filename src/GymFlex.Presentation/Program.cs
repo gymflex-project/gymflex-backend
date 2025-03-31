@@ -3,15 +3,33 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configura o acesso ao banco de dados PostgreSQL com a string de conex�o
+// Configuração do DbContext utilizando a string de conexão do appsettings.json
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// Add services to the container.
+// Obtém as origens permitidas da configuração
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+
+// Configura a política de CORS utilizando os valores do appsettings.json
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", policy =>
+    {
+        if (allowedOrigins == null || allowedOrigins.Length == 0)
+        {
+            throw new ArgumentException("Allowed origins are not configured in appsettings.json.");
+        }
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// Adiciona os serviços à aplicação
 builder.Services.AddControllers();
 
-// Adiciona o suporte a documenta��o da API via Swagger
+// Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -25,7 +43,6 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -36,10 +53,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+// Habilita a política de CORS definida
+app.UseCors("AllowSpecificOrigins");
+
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
