@@ -3,9 +3,9 @@ services:
     image: postgres:latest
     container_name: postgres-container
     environment:
-      POSTGRES_USER: gymflex-user
-      POSTGRES_PASSWORD: gymflex-password
-      POSTGRES_DB: gymflex-db
+      POSTGRES_USER: GymFlexUser
+      POSTGRES_PASSWORD: GymFlexPassword
+      POSTGRES_DB: GymFlexDb
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
