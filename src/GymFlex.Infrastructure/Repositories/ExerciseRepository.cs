@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GymFlex.Infrastructure.Repositories
 {
-    internal class ExerciseRepository(ApplicationDbContext context) : IExerciseRepository
+    public class ExerciseRepository(ApplicationDbContext context) : IExerciseRepository
     {
         private readonly ApplicationDbContext _context = context;
         private DbSet<Exercise> _exercises => _context.Set<Exercise>();
@@ -49,7 +49,7 @@ namespace GymFlex.Infrastructure.Repositories
             return new(input.Page, input.PerPage, total, items);
         }
 
-        private IQueryable<Exercise> AddOrderToQuery(
+        private static IQueryable<Exercise> AddOrderToQuery(
             IQueryable<Exercise> query,
             string orderProperty,
             SearchOrder order)
