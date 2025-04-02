@@ -4,12 +4,8 @@ using GymFlex.Domain.SeedWork;
 
 namespace GymFlex.Infrastructure.Data.Context
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<ExerciseSubstitution> ExerciseSubstitutions { get; set; }
         public DbSet<MuscleGroup> MuscleGroups { get; set; }
