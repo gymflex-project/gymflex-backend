@@ -1,36 +1,36 @@
-﻿using GymFlex.Application.Exceptions;
-using GymFlex.Domain.SeedWork.SearchableRepository;
+using GymFlex.Application.Exceptions;
 using GymFlex.Domain.Entities;
 using GymFlex.Domain.Repositories;
+using GymFlex.Domain.SeedWork.SearchableRepository;
 using GymFlex.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymFlex.Infrastructure.Repositories
 {
-    public class ExerciseRepository(ApplicationDbContext context) : IExerciseRepository
+    public class ExerciseSubstitutionRepository(ApplicationDbContext context) : IExerciseSubstitutionRepository
     {
         private readonly ApplicationDbContext _context = context;
-        private DbSet<Exercise> _exercises => _context.Set<Exercise>();
+        private DbSet<ExerciseSubstitution> _exerciseSubstitutions => _context.Set<ExerciseSubstitution>();
 
-        public async Task<Exercise> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<ExerciseSubstitution> Get(Guid id, CancellationToken cancellationToken)
         {
-            var exercise = await _exercises.AsNoTracking().FirstOrDefaultAsync(
+            var exerciseSubstitution = await _exerciseSubstitutions.AsNoTracking().FirstOrDefaultAsync(
                 x => x.Id == id,
                 cancellationToken
             );
-            NotFoundException.ThrowIfNull(exercise, $"Exercise '{id}' not found.");
-            return exercise!;
+            NotFoundException.ThrowIfNull(exerciseSubstitution, $"ExerciseSubstitution '{id}' not found.");
+            return exerciseSubstitution!;
         }
 
-        public async Task<SearchOutput<Exercise>> Search(SearchInput input, CancellationToken cancellationToken)
+        public async Task<SearchOutput<ExerciseSubstitution>> Search(SearchInput input, CancellationToken cancellationToken)
         {
             var toSkip = (input.Page - 1) * input.PerPage;
-            var query = _exercises.AsNoTracking();
+            var query = _exerciseSubstitutions.AsNoTracking();
 
             query = AddOrderToQuery(query, input.OrderBy, input.Order);
 
             if (!string.IsNullOrWhiteSpace(input.Search))
-                query = query.Where(x => x.Name.Contains(input.Search));
+                query = query.Where(x => x.ExerciseId.ToString() == input.Search);
 
             var total = await query.CountAsync(cancellationToken);
             var items = await query.Skip(toSkip)
@@ -40,20 +40,20 @@ namespace GymFlex.Infrastructure.Repositories
             return new(input.Page, input.PerPage, total, items);
         }
 
-        private static IQueryable<Exercise> AddOrderToQuery(
-            IQueryable<Exercise> query,
+        private static IQueryable<ExerciseSubstitution> AddOrderToQuery(
+            IQueryable<ExerciseSubstitution> query,
             string orderProperty,
             SearchOrder order)
         {
             var orderedQuery = (orderProperty.ToLower(), order) switch
             {
-                ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name).ThenBy(x => x.Id),
-                ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name).ThenByDescending(x => x.Id),
+                ("exerciseId", SearchOrder.Asc) => query.OrderBy(x => x.ExerciseId).ThenBy(x => x.Id),
+                ("exerciseId", SearchOrder.Desc) => query.OrderByDescending(x => x.ExerciseId).ThenByDescending(x => x.Id),
                 ("id", SearchOrder.Asc) => query.OrderBy(x => x.Id),  
                 ("id", SearchOrder.Desc) => query.OrderByDescending(x => x.Id),
                 ("createdat", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt),
                 ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
-                _ => query.OrderBy(x => x.Name).ThenBy(x => x.Id)
+                _ => query.OrderBy(x => x.ExerciseId).ThenBy(x => x.Id)
             };
             return orderedQuery;
         }

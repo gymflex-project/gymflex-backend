@@ -2,13 +2,13 @@
 {
     public enum EquipmentType
     {
-        Bodyweight,
+        BodyWeight,
         Dumbbell,
         Barbell,
         Machine,
         Cable,
         ResistanceBands,
-        Kettlebell,
+        KettleBell,
         MedicineBall,
         None,
         Other

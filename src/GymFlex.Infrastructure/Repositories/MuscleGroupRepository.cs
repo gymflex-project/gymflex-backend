@@ -1,31 +1,30 @@
-﻿using GymFlex.Application.Exceptions;
-using GymFlex.Domain.SeedWork.SearchableRepository;
+using GymFlex.Application.Exceptions;
 using GymFlex.Domain.Entities;
 using GymFlex.Domain.Repositories;
+using GymFlex.Domain.SeedWork.SearchableRepository;
 using GymFlex.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymFlex.Infrastructure.Repositories
 {
-    public class ExerciseRepository(ApplicationDbContext context) : IExerciseRepository
+    public class MuscleGroupRepository(ApplicationDbContext context) : IMuscleGroupRepository
     {
         private readonly ApplicationDbContext _context = context;
-        private DbSet<Exercise> _exercises => _context.Set<Exercise>();
-
-        public async Task<Exercise> Get(Guid id, CancellationToken cancellationToken)
+        private DbSet<MuscleGroup> _muscleGroups => _context.Set<MuscleGroup>();
+        public async Task<MuscleGroup> Get(Guid id, CancellationToken cancellationToken)
         {
-            var exercise = await _exercises.AsNoTracking().FirstOrDefaultAsync(
+            var exercise = await _muscleGroups.AsNoTracking().FirstOrDefaultAsync(
                 x => x.Id == id,
                 cancellationToken
             );
-            NotFoundException.ThrowIfNull(exercise, $"Exercise '{id}' not found.");
+            NotFoundException.ThrowIfNull(exercise, $"Muscle Group '{id}' not found.");
             return exercise!;
         }
-
-        public async Task<SearchOutput<Exercise>> Search(SearchInput input, CancellationToken cancellationToken)
+        
+        public async Task<SearchOutput<MuscleGroup>> Search(SearchInput input, CancellationToken cancellationToken)
         {
             var toSkip = (input.Page - 1) * input.PerPage;
-            var query = _exercises.AsNoTracking();
+            var query = _muscleGroups.AsNoTracking();
 
             query = AddOrderToQuery(query, input.OrderBy, input.Order);
 
@@ -40,8 +39,8 @@ namespace GymFlex.Infrastructure.Repositories
             return new(input.Page, input.PerPage, total, items);
         }
 
-        private static IQueryable<Exercise> AddOrderToQuery(
-            IQueryable<Exercise> query,
+        private static IQueryable<MuscleGroup> AddOrderToQuery(
+            IQueryable<MuscleGroup> query,
             string orderProperty,
             SearchOrder order)
         {
@@ -57,5 +56,5 @@ namespace GymFlex.Infrastructure.Repositories
             };
             return orderedQuery;
         }
-    }
+    }   
 }

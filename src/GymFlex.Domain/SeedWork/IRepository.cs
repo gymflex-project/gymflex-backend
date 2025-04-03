@@ -1,4 +1,4 @@
-﻿namespace FC.Codeflix.Catalog.Domain.SeedWork
+﻿namespace GymFlex.Domain.SeedWork
 {
     public interface IRepository
     {
