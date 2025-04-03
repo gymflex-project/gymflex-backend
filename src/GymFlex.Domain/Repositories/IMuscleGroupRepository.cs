@@ -4,5 +4,5 @@ using GymFlex.Domain.SeedWork.SearchableRepository;
 
 namespace GymFlex.Domain.Repositories
 {
-    public interface IExerciseRepository : IGenericRepository<Exercise>, ISearchableRepository<Exercise>;
+    public interface IMuscleGroupRepository : IGenericRepository<MuscleGroup>, ISearchableRepository<MuscleGroup>;
 }
