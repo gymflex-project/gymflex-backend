@@ -2,5 +2,5 @@
 
 namespace GymFlex.Application.UseCases.MuscleGroup.ListMuscleGroups
 {
-    interface IGetMuscleGroup : IRequestHandler<GetMuscleGroupInput, GetMuscleGroupOutput>;
+    interface IListMuscleGroups : IRequestHandler<ListMuscleGroupsInput, ListMuscleGroupsOutput>;
 }

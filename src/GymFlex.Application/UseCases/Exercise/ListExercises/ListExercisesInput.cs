@@ -2,9 +2,9 @@
 using GymFlex.Domain.SeedWork.SearchableRepository;
 using MediatR;
 
-namespace GymFlex.Application.UseCases.MuscleGroup.ListMuscleGroups
+namespace GymFlex.Application.UseCases.Exercise.ListExercises
 {
-    public class ListMuscleGroupsInput(int page = ApplicationDefaults.DefaultPage,
+    public class ListExercisesInput(int page = ApplicationDefaults.DefaultPage,
         int perPage = ApplicationDefaults.DefaultPerPage,
         string search = ApplicationDefaults.DefaultSearch,
         string sort = ApplicationDefaults.DefaultSort,

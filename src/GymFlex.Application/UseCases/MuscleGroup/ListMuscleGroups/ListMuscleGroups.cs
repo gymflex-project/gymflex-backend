@@ -5,14 +5,14 @@ using GymFlex.Domain.Repositories;
 
 namespace GymFlex.Application.UseCases.MuscleGroup.ListMuscleGroups
 {
-    public class GetMuscleGroup : IGetMuscleGroup
+    public class ListMuscleGroups : IListMuscleGroups
     {
         private readonly IMuscleGroupRepository _muscleGroupRepository;
-        public GetMuscleGroup(IMuscleGroupRepository muscleGroupRepository)
+        public ListMuscleGroups(IMuscleGroupRepository muscleGroupRepository)
         {
             _muscleGroupRepository = muscleGroupRepository;
         }
-        public async Task<GetMuscleGroupOutput> Handle(GetMuscleGroupInput request, CancellationToken cancellationToken)
+        public async Task<ListMuscleGroupsOutput> Handle(ListMuscleGroupsInput request, CancellationToken cancellationToken)
         {
             var searchOutput = await _muscleGroupRepository.Search(
                 new(
@@ -25,7 +25,7 @@ namespace GymFlex.Application.UseCases.MuscleGroup.ListMuscleGroups
                 cancellationToken
             );
 
-            return new GetMuscleGroupOutput(
+            return new ListMuscleGroupsOutput(
                 searchOutput.CurrentPage,
                 searchOutput.PerPage,
                 searchOutput.Total,
