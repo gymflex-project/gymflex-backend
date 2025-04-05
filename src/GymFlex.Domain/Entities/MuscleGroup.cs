@@ -1,4 +1,5 @@
 ﻿using GymFlex.Domain.SeedWork;
+using GymFlex.Domain.Validation;
 
 namespace GymFlex.Domain.Entities
 {
@@ -11,6 +12,12 @@ namespace GymFlex.Domain.Entities
         public void AddExercise(Guid exerciseId)
         {
             _exercises.Add(exerciseId);
+        }
+        private void Validate()
+        {
+            DomainValidation.NotNullOrEmpty(Name, nameof(Name));
+            DomainValidation.MinLength(Name, 3, nameof(Name));
+            DomainValidation.MaxLength(Name, 255, nameof(Name));
         }
     }
 }
