@@ -1,6 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-using GymFlex.Application.UseCases.MuscleGroup.Common;
+﻿using GymFlex.Application.UseCases.MuscleGroup.Common;
 using GymFlex.Domain.Repositories;
 
 namespace GymFlex.Application.UseCases.MuscleGroup.ListMuscleGroups
