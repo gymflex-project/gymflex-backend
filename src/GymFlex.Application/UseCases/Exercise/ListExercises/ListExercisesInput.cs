@@ -9,5 +9,5 @@ namespace GymFlex.Application.UseCases.Exercise.ListExercises
         string search = ApplicationDefaults.DefaultSearch,
         string sort = ApplicationDefaults.DefaultSort,
         SearchOrder direction = ApplicationDefaults.DefaultSearchOrder
-        ) : PaginatedListInput(page, perPage, search, sort, direction), IRequest<ListMuscleGroupsOutput>;
+        ) : PaginatedListInput(page, perPage, search, sort, direction), IRequest<ListExercisesOutput>;
 }

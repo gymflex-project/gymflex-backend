@@ -1,4 +1,5 @@
 using GymFlex.Infrastructure.Data.Context;
+using GymFlex.Presentation.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddUseCases();
 
 // Obtém as origens permitidas da configuração
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();

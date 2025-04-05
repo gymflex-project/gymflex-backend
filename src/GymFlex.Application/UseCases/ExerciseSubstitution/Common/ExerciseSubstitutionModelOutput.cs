@@ -8,6 +8,6 @@ namespace GymFlex.Application.UseCases.ExerciseSubstitution.Common
         public string Name { get; set; } = name;
 
         public static ExerciseSubstitutionModelOutput FromExerciseSubstitution(DomainEntity.ExerciseSubstitution exerciseSubstitution) 
-            => new(exerciseSubstitution.Id, exerciseSubstitution.Name);
+            => new(exerciseSubstitution.Id, exerciseSubstitution.Notes);
     }
 }

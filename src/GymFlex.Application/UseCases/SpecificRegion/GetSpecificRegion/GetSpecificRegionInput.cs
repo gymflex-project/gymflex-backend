@@ -3,8 +3,8 @@ using MediatR;
 
 namespace GymFlex.Application.UseCases.SpecificRegion.GetSpecificRegion
 {
-    public class GetSpecificRegionInput(Guid Id) : IRequest<SpecificRegionModelOutput>
+    public class GetSpecificRegionInput(Guid id) : IRequest<SpecificRegionModelOutput>
     {
-        public Guid Id { get; set; } = Id;
+        public Guid Id { get; set; } = id;
     }
 }
