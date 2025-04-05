@@ -3,16 +3,11 @@ using GymFlex.Domain.Repositories;
 
 namespace GymFlex.Application.UseCases.SpecificRegion.ListSpecificRegions
 {
-    public class ListSpecificRegions : IListSpecificRegions
+    public class ListSpecificRegions(ISpecificRegionRepository specificRegionRepository) : IListSpecificRegions
     {
-        private readonly ISpecificRegionRepository _specificRegionRepository;
-        public ListSpecificRegions(ISpecificRegionRepository specificRegionRepository)
-        {
-            _specificRegionRepository = specificRegionRepository;
-        }
         public async Task<ListSpecificRegionsOutput> Handle(ListSpecificRegionsInput request, CancellationToken cancellationToken)
         {
-            var searchOutput = await _specificRegionRepository.Search(
+            var searchOutput = await specificRegionRepository.Search(
                 new(
                 request.Page,
                 request.PerPage,

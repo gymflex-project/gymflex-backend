@@ -3,16 +3,11 @@ using GymFlex.Domain.Repositories;
 
 namespace GymFlex.Application.UseCases.MuscleGroup.ListMuscleGroups
 {
-    public class ListMuscleGroups : IListMuscleGroups
+    public class ListMuscleGroups(IMuscleGroupRepository muscleGroupRepository) : IListMuscleGroups
     {
-        private readonly IMuscleGroupRepository _muscleGroupRepository;
-        public ListMuscleGroups(IMuscleGroupRepository muscleGroupRepository)
-        {
-            _muscleGroupRepository = muscleGroupRepository;
-        }
         public async Task<ListMuscleGroupsOutput> Handle(ListMuscleGroupsInput request, CancellationToken cancellationToken)
         {
-            var searchOutput = await _muscleGroupRepository.Search(
+            var searchOutput = await muscleGroupRepository.Search(
                 new(
                 request.Page,
                 request.PerPage,

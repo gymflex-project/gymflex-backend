@@ -3,5 +3,5 @@ using MediatR;
 
 namespace GymFlex.Application.UseCases.Exercise.GetExercise
 {
-    interface IGetExercise : IRequestHandler<GetExerciseInput, ExerciseModelOutput>;
+    public interface IGetExercise : IRequestHandler<GetExerciseInput, ExerciseModelOutput>;
 }

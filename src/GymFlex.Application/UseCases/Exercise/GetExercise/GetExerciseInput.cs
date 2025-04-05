@@ -3,8 +3,8 @@ using MediatR;
 
 namespace GymFlex.Application.UseCases.Exercise.GetExercise
 {
-    public class GetExerciseInput(Guid Id) : IRequest<ExerciseModelOutput>
+    public class GetExerciseInput(Guid id) : IRequest<ExerciseModelOutput>
     {
-        public Guid Id { get; set; } = Id;
+        public Guid Id { get; set; } = id;
     }
 }

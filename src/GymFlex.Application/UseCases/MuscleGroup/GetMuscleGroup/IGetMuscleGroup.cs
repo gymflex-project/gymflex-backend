@@ -3,5 +3,5 @@ using MediatR;
 
 namespace GymFlex.Application.UseCases.MuscleGroup.GetMuscleGroup
 {
-    interface IGetMuscleGroup : IRequestHandler<GetMuscleGroupInput, MuscleGroupModelOutput>;
+    public interface IGetMuscleGroup : IRequestHandler<GetMuscleGroupInput, MuscleGroupModelOutput>;
 }
