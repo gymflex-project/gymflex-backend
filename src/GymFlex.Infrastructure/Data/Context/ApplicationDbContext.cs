@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using GymFlex.Domain.Entities;
 using GymFlex.Domain.SeedWork;
+using GymFlex.Infrastructure.Configurations;
 
 namespace GymFlex.Infrastructure.Data.Context
 {
@@ -10,7 +11,14 @@ namespace GymFlex.Infrastructure.Data.Context
         public DbSet<ExerciseSubstitution> ExerciseSubstitutions { get; set; }
         public DbSet<MuscleGroup> MuscleGroups { get; set; }
         public DbSet<SpecificRegion> SpecificRegions { get; set; }
-
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new ExerciseConfiguration());
+            builder.ApplyConfiguration(new ExerciseSubstitutionConfiguration());
+            builder.ApplyConfiguration(new MuscleGroupConfiguration());
+            builder.ApplyConfiguration(new SpecificRegionConfiguration());
+        }
         public override int SaveChanges()
         {
             UpdateTimestamps();

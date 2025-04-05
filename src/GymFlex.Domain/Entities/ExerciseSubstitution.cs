@@ -1,5 +1,6 @@
 ﻿using GymFlex.Domain.Enums;
 using GymFlex.Domain.SeedWork;
+using GymFlex.Domain.Validation;
 
 namespace GymFlex.Domain.Entities
 {
@@ -16,5 +17,8 @@ namespace GymFlex.Domain.Entities
         public Exercise? Exercise { get; private set; }
         public Guid SubstituteExerciseId { get; private set; } = substituteExerciseId;
         public Exercise? SubstituteExercise { get; private set; }
+        
+        private void Validate()
+            => DomainValidation.MaxLength(Notes, 255, nameof(Notes));
     }
 }
