@@ -30,7 +30,11 @@ namespace GymFlex.Infrastructure.Repositories
             query = AddOrderToQuery(query, input.OrderBy, input.Order);
 
             if (!string.IsNullOrWhiteSpace(input.Search))
-                query = query.Where(x => x.Name.Contains(input.Search));
+            {
+                string searchLower;
+                searchLower = input.Search.ToLower();
+                query = query.Where(x => x.Name.ToLower().Contains(searchLower));
+            }
 
             var total = await query.CountAsync(cancellationToken);
             var items = await query.Skip(toSkip)

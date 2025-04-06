@@ -1,11 +1,10 @@
-using GymFlex.Infrastructure.Data.Context;
 using GymFlex.Presentation.Configurations;
-using Microsoft.EntityFrameworkCore;
+using GymFlex.Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddAppConections(builder.Configuration)
+    .AddAppConnections(builder.Configuration)
     .AddUseCases()
     .AddAndConfigureControllers(builder.Configuration);
 
@@ -16,4 +15,8 @@ app.UseDocumentation();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+// Executa o seeding do banco de dados
+app.UseDatabaseSeeder();
+
 app.Run();

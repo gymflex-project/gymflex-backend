@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GymFlex.Presentation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/exercises")]
     public class ExercisesController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;

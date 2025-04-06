@@ -1,4 +1,3 @@
-using GymFlex.Infrastructure.Data;
 using GymFlex.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +5,7 @@ namespace GymFlex.Presentation.Configurations
 {
     public static class ConnectionsConfigurations
     {
-        public static IServiceCollection AddAppConections(
+        public static IServiceCollection AddAppConnections(
             this IServiceCollection services,
             IConfiguration configuration
         )

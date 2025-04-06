@@ -17,7 +17,7 @@ namespace GymFlex.Presentation.Filters
     
             if(exception is EntityValidationException)
             {
-                details.Title = "One or more validation errors ocurred";
+                details.Title = "One or more validation errors occurred";
                 details.Status = StatusCodes.Status422UnprocessableEntity;
                 details.Type = "UnprocessableEntity";
                 details.Detail = exception!.Message;
@@ -39,7 +39,7 @@ namespace GymFlex.Presentation.Filters
             }
             else
             {
-                details.Title = "An unexpected error ocurred";
+                details.Title = "An unexpected error occurred";
                 details.Status = StatusCodes.Status422UnprocessableEntity;
                 details.Type = "UnexpectedError";
                 details.Detail = exception.Message;

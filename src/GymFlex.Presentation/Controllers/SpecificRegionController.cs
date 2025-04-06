@@ -5,11 +5,12 @@ using GymFlex.Domain.SeedWork.SearchableRepository;
 using GymFlex.Presentation.ApiModels.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static System.String;
 
 namespace GymFlex.Presentation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/specific-regions")]
     public class SpecificRegionController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
@@ -28,8 +29,8 @@ namespace GymFlex.Presentation.Controllers
             var input = new ListSpecificRegionsInput();
             if (page is not null) input.Page = page.Value;
             if (perPage is not null) input.PerPage = perPage.Value;
-            if (!String.IsNullOrWhiteSpace(search)) input.Search = search;
-            if (!String.IsNullOrWhiteSpace(sort)) input.Sort = sort;
+            if (!IsNullOrWhiteSpace(search)) input.Search = search;
+            if (!IsNullOrWhiteSpace(sort)) input.Sort = sort;
             if (dir is not null) input.SortDirection = dir.Value;
         
             var output = await _mediator.Send(input, cancellationToken);
