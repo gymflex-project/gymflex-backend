@@ -30,7 +30,7 @@ namespace GymFlex.Application.UseCases.Exercise.ListExercises
                 searchOutput.PerPage,
                 searchOutput.Total,
                 searchOutput.Items
-                .Select(ExerciseModelOutput.FromExercise)
+                .Select(ExerciseDetailedModelOutput.FromExercise)
                 .ToList()
             );
         }

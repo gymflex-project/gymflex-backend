@@ -25,7 +25,10 @@ namespace GymFlex.Infrastructure.Repositories
         public async Task<SearchOutput<Exercise>> Search(SearchInput input, CancellationToken cancellationToken)
         {
             var toSkip = (input.Page - 1) * input.PerPage;
-            var query = _exercises.AsNoTracking();
+            IQueryable<Exercise> query = _exercises.AsNoTracking()
+                .Include(e => e.MuscleGroup)
+                .Include(e => e.SpecificRegion);
+
 
             query = AddOrderToQuery(query, input.OrderBy, input.Order);
 
@@ -33,7 +36,12 @@ namespace GymFlex.Infrastructure.Repositories
             {
                 string searchLower;
                 searchLower = input.Search.ToLower();
-                query = query.Where(x => x.Name.ToLower().Contains(searchLower));
+                query = query.Where(x =>
+                    x.Name.ToLower().Contains(searchLower) ||
+                    (x.MuscleGroup != null && x.MuscleGroup.Name.ToLower().Contains(searchLower)) ||
+                    (x.SpecificRegion != null && x.SpecificRegion.Name.ToLower().Contains(searchLower))
+                );
+
             }
 
             var total = await query.CountAsync(cancellationToken);

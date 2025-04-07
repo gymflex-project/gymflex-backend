@@ -25,7 +25,8 @@ namespace GymFlex.Infrastructure.Repositories
         public async Task<SearchOutput<ExerciseSubstitution>> Search(SearchInput input, CancellationToken cancellationToken)
         {
             var toSkip = (input.Page - 1) * input.PerPage;
-            var query = _exerciseSubstitutions.AsNoTracking();
+            IQueryable<ExerciseSubstitution> query = _exerciseSubstitutions.AsNoTracking()
+                .Include(e => e.SubstituteExercise);
 
             query = AddOrderToQuery(query, input.OrderBy, input.Order);
 

@@ -34,7 +34,7 @@ namespace GymFlex.Presentation.Controllers
         
             var output = await _mediator.Send(input, cancellationToken);
             return Ok(
-                new ApiResponseList<ExerciseModelOutput>(output)
+                new ApiResponseList<ExerciseDetailedModelOutput>(output)
             );
         }
         [HttpGet("{id:guid}")]

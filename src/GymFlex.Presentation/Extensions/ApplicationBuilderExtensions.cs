@@ -21,14 +21,11 @@ namespace GymFlex.Presentation.Extensions
                     {
                         ["Peito"] = new() { "Peitoral Superior", "Peitoral Médio", "Peitoral Inferior" },
                         ["Costas"] = new() { "Dorsal", "Trapézio", "Lombar" },
-                        ["Pernas"] =
-                            new() { "Quadríceps", "Posterior de Coxa", "Panturrilha", "Adutores", "Abdutores" },
-                        ["Ombros"] = new()
-                            { "Deltoide Anterior", "Deltoide Lateral", "Deltoide Posterior", "Manguito Rotador" },
+                        ["Pernas"] = new() { "Quadríceps", "Posterior de Coxa", "Panturrilha", "Adutores", "Abdutores" },
+                        ["Ombros"] = new() { "Deltoide Anterior", "Deltoide Lateral", "Deltoide Posterior", "Manguito Rotador" },
                         ["Braços"] = new() { "Bíceps", "Tríceps", "Antebraço" },
                         ["Abdômen"] = new() { "Abdominais Superiores", "Abdominais Inferiores", "Oblíquos" },
-                        ["Pescoço"] = new()
-                            { "Trapézio Superior", "Esternocleidomastoideo", "Flexores Profundos do Pescoço" },
+                        ["Pescoço"] = new() { "Trapézio Superior", "Esternocleidomastoideo", "Flexores Profundos do Pescoço" },
                         ["Glúteos"] = new() { "Glúteo Máximo", "Glúteo Médio", "Glúteo Mínimo" },
                     };
 
@@ -62,6 +59,7 @@ namespace GymFlex.Presentation.Extensions
 
                     context.SaveChanges();
 
+                    // Captura de IDs para criação de exercícios
                     var peito = muscleGroups.First(g => g.Name == "Peito").Id;
                     var peitoSuperior = specificRegions.First(r => r.Name == "Peitoral Superior").Id;
                     var peitoMedio = specificRegions.First(r => r.Name == "Peitoral Médio").Id;
@@ -92,6 +90,7 @@ namespace GymFlex.Presentation.Extensions
                     var abdInf = specificRegions.First(r => r.Name == "Abdominais Inferiores").Id;
                     var obliquos = specificRegions.First(r => r.Name == "Oblíquos").Id;
 
+                    // Criação dos Exercícios
                     context.Exercises.AddRange(
                         new Exercise("Flexão de Braço", peito, peitoMedio, DifficultyLevel.Medium,
                             "Exercício com peso corporal para peitoral.", ExerciseCategory.Strength,
@@ -156,7 +155,51 @@ namespace GymFlex.Presentation.Extensions
 
                     context.SaveChanges();
 
-                    Console.WriteLine("Seed concluído com sucesso.");
+                    Console.WriteLine("Seed de Exercícios concluído com sucesso.");
+                }
+
+                // Seção para popular a tabela de ExerciseSubstitution
+                if (!context.ExerciseSubstitutions.Any())
+                {
+                    // Recupera IDs dos exercícios previamente criados
+                    var flexaoDeBracoId = context.Exercises.First(e => e.Name == "Flexão de Braço").Id;
+                    var supinoInclinadoId = context.Exercises.First(e => e.Name == "Supino Inclinado com Halteres").Id;
+                    var crossOverId = context.Exercises.First(e => e.Name == "Cross Over no Cabo").Id;
+                    var remadaCurvadaId = context.Exercises.First(e => e.Name == "Remada Curvada com Barra").Id;
+                    var puxadaId = context.Exercises.First(e => e.Name == "Puxada na Frente com Pegada Aberta").Id;
+                    var remadaUnilateralId = context.Exercises.First(e => e.Name == "Remada Unilateral com Halter").Id;
+                    var levantamentoTerraId = context.Exercises.First(e => e.Name == "Levantamento Terra").Id;
+                    var legPressId = context.Exercises.First(e => e.Name == "Leg Press 45°").Id;
+                    var cadeiraExtensoraId = context.Exercises.First(e => e.Name == "Cadeira Extensora").Id;
+                    var elevacaoLateralId = context.Exercises.First(e => e.Name == "Elevação Lateral com Halteres").Id;
+                    var desenvolvimentoId = context.Exercises.First(e => e.Name == "Desenvolvimento com Barra").Id;
+                    var roscaDiretaId = context.Exercises.First(e => e.Name == "Rosca Direta").Id;
+                    var roscaAlternadaId = context.Exercises.First(e => e.Name == "Rosca Alternada").Id;
+                    var tricepsTestaId = context.Exercises.First(e => e.Name == "Tríceps Testa").Id;
+                    var tricepsCordaId = context.Exercises.First(e => e.Name == "Tríceps Corda no Pulley").Id;
+                    var pranchaId = context.Exercises.First(e => e.Name == "Prancha Abdominal").Id;
+                    var elevacaoPernasId = context.Exercises.First(e => e.Name == "Elevação de Pernas na Barra Fixa").Id;
+                    var abdominalObliquoId = context.Exercises.First(e => e.Name == "Abdominal Oblíquo no Banco").Id;
+
+                    // Criação das substituições de exercícios
+                    var exerciseSubstitutions = new List<ExerciseSubstitution>
+                    {
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Substituição similar para peito.", flexaoDeBracoId, supinoInclinadoId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa para variação de peito.", flexaoDeBracoId, crossOverId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Substituição para costas, ambos focam nos dorsais.", remadaCurvadaId, puxadaId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa unilateral para costas.", remadaUnilateralId, levantamentoTerraId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa para treino de quadríceps.", legPressId, cadeiraExtensoraId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Substituição para ombros, focando deltoides.", elevacaoLateralId, desenvolvimentoId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Opção alternativa para bíceps.", roscaDiretaId, roscaAlternadaId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Alternativa para treino de tríceps.", tricepsTestaId, tricepsCordaId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa para treino do core.", pranchaId, elevacaoPernasId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Opção para treino de oblíquos.", abdominalObliquoId, pranchaId)
+                    };
+
+                    context.ExerciseSubstitutions.AddRange(exerciseSubstitutions);
+                    context.SaveChanges();
+
+                    Console.WriteLine("Seed de Substituições de Exercícios concluído com sucesso.");
                 }
             }
 
