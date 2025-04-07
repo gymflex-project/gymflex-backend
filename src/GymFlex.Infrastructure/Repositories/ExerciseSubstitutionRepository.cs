@@ -26,7 +26,9 @@ namespace GymFlex.Infrastructure.Repositories
         {
             var toSkip = (input.Page - 1) * input.PerPage;
             IQueryable<ExerciseSubstitution> query = _exerciseSubstitutions.AsNoTracking()
-                .Include(e => e.SubstituteExercise);
+                .Include(e => e.SubstituteExercise)
+                .Include(e => e.SubstituteExercise.SpecificRegion)
+                .Include(e => e.SubstituteExercise.MuscleGroup);
 
             query = AddOrderToQuery(query, input.OrderBy, input.Order);
 
