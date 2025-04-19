@@ -157,7 +157,7 @@ namespace GymFlex.Presentation.Extensions
 
                     Console.WriteLine("Seed de Exercícios concluído com sucesso.");
                 }
-
+                
                 // Seção para popular a tabela de ExerciseSubstitution
                 if (!context.ExerciseSubstitutions.Any())
                 {
@@ -171,8 +171,10 @@ namespace GymFlex.Presentation.Extensions
                     var levantamentoTerraId = context.Exercises.First(e => e.Name == "Levantamento Terra").Id;
                     var legPressId = context.Exercises.First(e => e.Name == "Leg Press 45°").Id;
                     var cadeiraExtensoraId = context.Exercises.First(e => e.Name == "Cadeira Extensora").Id;
+                    var cadeiraFlexoraId = context.Exercises.First(e => e.Name == "Cadeira Flexora").Id;
                     var elevacaoLateralId = context.Exercises.First(e => e.Name == "Elevação Lateral com Halteres").Id;
                     var desenvolvimentoId = context.Exercises.First(e => e.Name == "Desenvolvimento com Barra").Id;
+                    var remadaAltaId = context.Exercises.First(e => e.Name == "Remada Alta").Id;
                     var roscaDiretaId = context.Exercises.First(e => e.Name == "Rosca Direta").Id;
                     var roscaAlternadaId = context.Exercises.First(e => e.Name == "Rosca Alternada").Id;
                     var tricepsTestaId = context.Exercises.First(e => e.Name == "Tríceps Testa").Id;
@@ -181,7 +183,7 @@ namespace GymFlex.Presentation.Extensions
                     var elevacaoPernasId = context.Exercises.First(e => e.Name == "Elevação de Pernas na Barra Fixa").Id;
                     var abdominalObliquoId = context.Exercises.First(e => e.Name == "Abdominal Oblíquo no Banco").Id;
 
-                    // Criação das substituições de exercícios
+                    // Criação das substituições de exercícios (30 registros)
                     var exerciseSubstitutions = new List<ExerciseSubstitution>
                     {
                         new ExerciseSubstitution(EquivalenceLevel.High, "Substituição similar para peito.", flexaoDeBracoId, supinoInclinadoId),
@@ -193,7 +195,29 @@ namespace GymFlex.Presentation.Extensions
                         new ExerciseSubstitution(EquivalenceLevel.High, "Opção alternativa para bíceps.", roscaDiretaId, roscaAlternadaId),
                         new ExerciseSubstitution(EquivalenceLevel.High, "Alternativa para treino de tríceps.", tricepsTestaId, tricepsCordaId),
                         new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa para treino do core.", pranchaId, elevacaoPernasId),
-                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Opção para treino de oblíquos.", abdominalObliquoId, pranchaId)
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Opção para treino de oblíquos.", abdominalObliquoId, pranchaId),
+
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Substituição complementar para peito, variante.", supinoInclinadoId, crossOverId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Opção extra para peito.", flexaoDeBracoId, supinoInclinadoId),
+                        new ExerciseSubstitution(EquivalenceLevel.Low, "Substituição experimental para peito.", crossOverId, supinoInclinadoId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Substituição avançada para costas.", remadaCurvadaId, remadaUnilateralId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa dinâmica para costas.", puxadaId, remadaUnilateralId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Substituição para treino de costas completa.", remadaCurvadaId, levantamentoTerraId),
+                        new ExerciseSubstitution(EquivalenceLevel.Low, "Alternativa leve para treino de pernas.", cadeiraExtensoraId, legPressId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Opção robusta para treino de pernas.", legPressId, cadeiraFlexoraId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa para treino de pernas, ênfase em posteriores.", cadeiraExtensoraId, cadeiraFlexoraId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Substituição para treino de ombros, variante extra.", elevacaoLateralId, desenvolvimentoId),
+                        
+                        new ExerciseSubstitution(EquivalenceLevel.Low, "Substituição leve para treino de ombros.", remadaAltaId, desenvolvimentoId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa para treino de tríceps, variante 2.", tricepsTestaId, tricepsCordaId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Substituição para treino de bíceps, variante extra.", roscaDiretaId, roscaAlternadaId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa para treino do core, variante.", pranchaId, elevacaoPernasId),
+                        new ExerciseSubstitution(EquivalenceLevel.Low, "Substituição para treino de oblíquos, variante extra.", abdominalObliquoId, pranchaId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Opção para treino de peito, variante extra.", crossOverId, supinoInclinadoId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Substituição robusta para peito, opção extra.", supinoInclinadoId, flexaoDeBracoId),
+                        new ExerciseSubstitution(EquivalenceLevel.Medium, "Alternativa para treino de costas, opção extra.", remadaUnilateralId, levantamentoTerraId),
+                        new ExerciseSubstitution(EquivalenceLevel.Low, "Substituição leve para treino de costas, opção extra.", puxadaId, remadaCurvadaId),
+                        new ExerciseSubstitution(EquivalenceLevel.High, "Substituição para treino de tríceps, opção robusta.", tricepsTestaId, tricepsCordaId)
                     };
 
                     context.ExerciseSubstitutions.AddRange(exerciseSubstitutions);
@@ -201,6 +225,7 @@ namespace GymFlex.Presentation.Extensions
 
                     Console.WriteLine("Seed de Substituições de Exercícios concluído com sucesso.");
                 }
+
             }
 
             return app;
