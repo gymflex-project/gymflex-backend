@@ -1,4 +1,6 @@
-﻿using GymFlex.Presentation.Filters;
+﻿using GymFlex.Infrastructure.Data.Context;
+using GymFlex.Presentation.Filters;
+using Microsoft.AspNetCore.Identity;
 
 namespace GymFlex.Presentation.Configurations
 {
@@ -13,6 +15,7 @@ namespace GymFlex.Presentation.Configurations
                 .AddControllers(options
                     => options.Filters.Add(typeof(ApiGlobalExceptionFilter))
                 );
+            services.AddProblemDetails();
             services.AddDocumentation();
             services.AddAndConfigureCors(configuration);
             return services;
@@ -40,7 +43,8 @@ namespace GymFlex.Presentation.Configurations
         )
         {
             if (app.Environment.IsDevelopment())
-            {
+            {   
+                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
@@ -51,7 +55,15 @@ namespace GymFlex.Presentation.Configurations
             return app;
         }
 
-        public static IServiceCollection AddAndConfigureCors(
+        private static IServiceCollection AddUserIdentity(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddAuthorization();
+            return services;
+        }
+
+
+        private static IServiceCollection AddAndConfigureCors(
             this IServiceCollection services, 
             IConfiguration configuration
         )

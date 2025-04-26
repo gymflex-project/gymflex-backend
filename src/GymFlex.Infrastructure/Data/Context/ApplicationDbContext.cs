@@ -2,10 +2,12 @@
 using GymFlex.Domain.Entities;
 using GymFlex.Domain.SeedWork;
 using GymFlex.Infrastructure.Configurations;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace GymFlex.Infrastructure.Data.Context
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<IdentityUser>(options)
     {
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<ExerciseSubstitution> ExerciseSubstitutions { get; set; }
@@ -14,6 +16,7 @@ namespace GymFlex.Infrastructure.Data.Context
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);  
             builder.ApplyConfiguration(new ExerciseConfiguration());
             builder.ApplyConfiguration(new ExerciseSubstitutionConfiguration());
             builder.ApplyConfiguration(new MuscleGroupConfiguration());
