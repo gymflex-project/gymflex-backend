@@ -1,8 +1,12 @@
 using GymFlex.Application.UseCases.SpecificRegion.Common;
+using GymFlex.Application.UseCases.SpecificRegion.CreateSpecificRegion;
+using GymFlex.Application.UseCases.SpecificRegion.DeleteSpecificRegion;
 using GymFlex.Application.UseCases.SpecificRegion.GetSpecificRegion;
 using GymFlex.Application.UseCases.SpecificRegion.ListSpecificRegions;
+using GymFlex.Application.UseCases.SpecificRegion.UpdateSpecificRegion;
 using GymFlex.Domain.SeedWork.SearchableRepository;
 using GymFlex.Presentation.ApiModels.Response;
+using GymFlex.Presentation.ApiModels.UpdateApiInput;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static System.String;
@@ -48,6 +52,52 @@ namespace GymFlex.Presentation.Controllers
         {
             var output = await _mediator.Send(new GetSpecificRegionInput(id), cancellationToken);
             return Ok(new ApiResponse<SpecificRegionModelOutput>(output));
+        }
+        
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponse<SpecificRegionModelOutput>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Create(
+            [FromBody] CreateSpecificRegionInput input, 
+            CancellationToken cancellationToken
+        )
+        {
+            var output = await _mediator.Send(input, cancellationToken);
+            return CreatedAtAction(
+                nameof(GetById), 
+                new { Id = output.Id },
+                new ApiResponse<SpecificRegionModelOutput>(output)
+            );
+        }
+        
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<SpecificRegionModelOutput>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Update(
+            [FromRoute] Guid id, 
+            [FromBody] UpdateSpecificRegionApiInput apiInput,
+            CancellationToken cancellationToken
+        )
+        {
+            var output = await _mediator.Send(
+                new UpdateSpecificRegionInput(
+                    id,
+                    apiInput.Name,
+                    apiInput.MuscleGroupId
+                ), 
+                cancellationToken
+            );
+            return Ok(new ApiResponse<SpecificRegionModelOutput>(output));
+        }
+        
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new DeleteSpecificRegionInput(id), cancellationToken);
+            return NoContent();
         }
     }
 }

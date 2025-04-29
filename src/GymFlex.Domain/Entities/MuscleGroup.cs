@@ -9,10 +9,19 @@ namespace GymFlex.Domain.Entities
         public IReadOnlyCollection<Guid> Exercises => _exercises.AsReadOnly();
         private readonly List<Guid> _exercises = new();
 
+        public void Update(
+            string name
+        )
+        {
+            Name = name;
+            Validate();
+        }
+        
         public void AddExercise(Guid exerciseId)
         {
             _exercises.Add(exerciseId);
         }
+        
         private void Validate()
         {
             DomainValidation.NotNullOrEmpty(Name, nameof(Name));

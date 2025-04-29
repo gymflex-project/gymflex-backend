@@ -24,6 +24,25 @@ namespace GymFlex.Domain.Entities
         public Guid SpecificRegionId { get; private set; } = specificRegionId;
         public SpecificRegion? SpecificRegion { get; private set; }
         
+        public void Update(
+            string name, 
+            Guid muscleGroupId, 
+            Guid specificRegionId, 
+            DifficultyLevel difficultyLevel,
+            string description, 
+            ExerciseCategory category, 
+            EquipmentType equipmentType)
+        {
+            Name = name;
+            MuscleGroupId = muscleGroupId;
+            SpecificRegionId = specificRegionId;
+            DifficultyLevel = difficultyLevel;
+            Description = description;
+            Category = category;
+            EquipmentType = equipmentType;
+            Validate();
+        }
+        
         private void Validate()
         {
             DomainValidation.NotNullOrEmpty(Name, nameof(Name));
