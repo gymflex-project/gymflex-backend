@@ -1,8 +1,12 @@
 using GymFlex.Application.UseCases.MuscleGroup.Common;
+using GymFlex.Application.UseCases.MuscleGroup.CreateMuscleGroup;
+using GymFlex.Application.UseCases.MuscleGroup.DeleteMuscleGroup;
 using GymFlex.Application.UseCases.MuscleGroup.GetMuscleGroup;
 using GymFlex.Application.UseCases.MuscleGroup.ListMuscleGroups;
+using GymFlex.Application.UseCases.MuscleGroup.UpdateMuscleGroup;
 using GymFlex.Domain.SeedWork.SearchableRepository;
 using GymFlex.Presentation.ApiModels.Response;
+using GymFlex.Presentation.ApiModels.UpdateApiInput;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,6 +51,50 @@ namespace GymFlex.Presentation.Controllers
         {
             var output = await _mediator.Send(new GetMuscleGroupInput(id), cancellationToken);
             return Ok(new ApiResponse<MuscleGroupModelOutput>(output));
+        }
+        
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponse<MuscleGroupModelOutput>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Create(
+            [FromBody] CreateMuscleGroupInput input, 
+            CancellationToken cancellationToken
+        )
+        {
+            var output = await _mediator.Send(input, cancellationToken);
+            return CreatedAtAction(
+                nameof(GetById), 
+                new { Id = output.Id },
+                new ApiResponse<MuscleGroupModelOutput>(output)
+            );
+        }
+        
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<MuscleGroupModelOutput>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Update(
+            [FromRoute] Guid id, 
+            [FromBody] UpdateMuscleGroupApiInput apiInput,
+            CancellationToken cancellationToken
+        )
+        {
+            var output = await _mediator.Send(
+                new UpdateMuscleGroupInput(
+                    id,
+                    apiInput.Name), 
+                cancellationToken
+            );
+            return Ok(new ApiResponse<MuscleGroupModelOutput>(output));
+        }
+        
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new DeleteMuscleGroupInput(id), cancellationToken);
+            return NoContent();
         }
     }
 }

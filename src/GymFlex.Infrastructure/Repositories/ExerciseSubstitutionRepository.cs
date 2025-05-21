@@ -22,6 +22,15 @@ namespace GymFlex.Infrastructure.Repositories
             return exerciseSubstitution!;
         }
 
+        public async Task Insert(ExerciseSubstitution aggregate, CancellationToken cancellationToken) 
+            => await _exerciseSubstitutions.AddAsync(aggregate, cancellationToken);
+        
+        public Task Delete(ExerciseSubstitution aggregate, CancellationToken _)
+            => Task.FromResult(_exerciseSubstitutions.Remove(aggregate));
+        
+        public Task Update(ExerciseSubstitution aggregate, CancellationToken _) 
+            => Task.FromResult(_exerciseSubstitutions.Update(aggregate));
+        
         public async Task<SearchOutput<ExerciseSubstitution>> Search(SearchInput input, CancellationToken cancellationToken)
         {
             var toSkip = (input.Page - 1) * input.PerPage;

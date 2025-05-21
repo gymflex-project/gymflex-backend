@@ -1,7 +1,11 @@
 using GymFlex.Application.UseCases.Exercise.Common;
+using GymFlex.Application.UseCases.Exercise.CreateExercise;
+using GymFlex.Application.UseCases.Exercise.DeleteExercise;
 using GymFlex.Application.UseCases.Exercise.GetExercise;
 using GymFlex.Application.UseCases.Exercise.ListExercises;
+using GymFlex.Application.UseCases.Exercise.UpdateExercise;
 using GymFlex.Domain.SeedWork.SearchableRepository;
+using GymFlex.Presentation.ApiModels.UpdateApiInput;
 using GymFlex.Presentation.ApiModels.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +51,56 @@ namespace GymFlex.Presentation.Controllers
         {
             var output = await _mediator.Send(new GetExerciseInput(id), cancellationToken);
             return Ok(new ApiResponse<ExerciseModelOutput>(output));
+        }
+        
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponse<ExerciseModelOutput>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Create(
+            [FromBody] CreateExerciseInput input, 
+            CancellationToken cancellationToken
+        )
+        {
+            var output = await _mediator.Send(input, cancellationToken);
+            return CreatedAtAction(
+                nameof(GetById), 
+                new { Id = output.Id },
+                new ApiResponse<ExerciseModelOutput>(output)
+            );
+        }
+        
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<ExerciseModelOutput>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Update(
+            [FromRoute] Guid id, 
+            [FromBody] UpdateExerciseApiInput apiInput,
+            CancellationToken cancellationToken
+        )
+        {
+            var output = await _mediator.Send(
+                new UpdateExerciseInput(
+                    id,
+                    apiInput.Name, 
+                    apiInput.MuscleGroupId, 
+                    apiInput.SpecificRegionId, 
+                    apiInput.DifficultyLevel,
+                    apiInput.Description, 
+                    apiInput.ExerciseCategory,
+                    apiInput.EquipmentType), 
+                cancellationToken
+            );
+            return Ok(new ApiResponse<ExerciseModelOutput>(output));
+        }
+        
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new DeleteExerciseInput(id), cancellationToken);
+            return NoContent();
         }
     }
 }

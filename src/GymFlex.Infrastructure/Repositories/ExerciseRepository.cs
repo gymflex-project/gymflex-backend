@@ -21,7 +21,16 @@ namespace GymFlex.Infrastructure.Repositories
             NotFoundException.ThrowIfNull(exercise, $"Exercise '{id}' not found.");
             return exercise!;
         }
-
+        
+        public async Task Insert(Exercise aggregate, CancellationToken cancellationToken) 
+            => await _exercises.AddAsync(aggregate, cancellationToken);
+        
+        public Task Delete(Exercise aggregate, CancellationToken _)
+            => Task.FromResult(_exercises.Remove(aggregate));
+        
+        public Task Update(Exercise aggregate, CancellationToken _) 
+            => Task.FromResult(_exercises.Update(aggregate));
+        
         public async Task<SearchOutput<Exercise>> Search(SearchInput input, CancellationToken cancellationToken)
         {
             var toSkip = (input.Page - 1) * input.PerPage;

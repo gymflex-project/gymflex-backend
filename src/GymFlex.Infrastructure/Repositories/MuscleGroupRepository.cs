@@ -21,6 +21,15 @@ namespace GymFlex.Infrastructure.Repositories
             return exercise!;
         }
         
+        public async Task Insert(MuscleGroup aggregate, CancellationToken cancellationToken) 
+            => await _muscleGroups.AddAsync(aggregate, cancellationToken);
+        
+        public Task Delete(MuscleGroup aggregate, CancellationToken _)
+            => Task.FromResult(_muscleGroups.Remove(aggregate));
+        
+        public Task Update(MuscleGroup aggregate, CancellationToken _) 
+            => Task.FromResult(_muscleGroups.Update(aggregate));
+        
         public async Task<SearchOutput<MuscleGroup>> Search(SearchInput input, CancellationToken cancellationToken)
         {
             var toSkip = (input.Page - 1) * input.PerPage;

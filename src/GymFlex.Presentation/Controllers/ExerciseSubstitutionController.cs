@@ -1,8 +1,12 @@
 using GymFlex.Application.UseCases.ExerciseSubstitution.Common;
+using GymFlex.Application.UseCases.ExerciseSubstitution.CreateExerciseSubstitution;
+using GymFlex.Application.UseCases.ExerciseSubstitution.DeleteExerciseSubstitution;
 using GymFlex.Application.UseCases.ExerciseSubstitution.GetExerciseSubstitution;
 using GymFlex.Application.UseCases.ExerciseSubstitution.ListExerciseSubstitutions;
+using GymFlex.Application.UseCases.ExerciseSubstitution.UpdateExerciseSubstitution;
 using GymFlex.Domain.SeedWork.SearchableRepository;
 using GymFlex.Presentation.ApiModels.Response;
+using GymFlex.Presentation.ApiModels.UpdateApiInput;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +41,7 @@ namespace GymFlex.Presentation.Controllers
                 new ApiResponseList<ExerciseSubstitutionModelOutput>(output)
             );
         }
+        
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(ApiResponse<ExerciseSubstitutionModelOutput>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -47,6 +52,53 @@ namespace GymFlex.Presentation.Controllers
         {
             var output = await _mediator.Send(new GetExerciseSubstitutionInput(id), cancellationToken);
             return Ok(new ApiResponse<ExerciseSubstitutionModelOutput>(output));
+        }
+        
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponse<ExerciseSubstitutionModelOutput>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Create(
+            [FromBody] CreateExerciseSubstitutionInput input, 
+            CancellationToken cancellationToken
+        )
+        {
+            var output = await _mediator.Send(input, cancellationToken);
+            return CreatedAtAction(
+                nameof(GetById), 
+                new { Id = output.Id },
+                new ApiResponse<ExerciseSubstitutionModelOutput>(output)
+            );
+        }
+        
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<ExerciseSubstitutionModelOutput>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Update(
+            [FromRoute] Guid id, 
+            [FromBody] UpdateExerciseSubstitutionApiInput apiInput,
+            CancellationToken cancellationToken
+        )
+        {
+            var output = await _mediator.Send(
+                new UpdateExerciseSubstitutionInput(
+                    id,
+                    apiInput.EquivalenceLevel,
+                    apiInput.Notes,
+                    apiInput.ExerciseId,
+                    apiInput.SubstituteExerciseId), 
+                cancellationToken
+            );
+            return Ok(new ApiResponse<ExerciseSubstitutionModelOutput>(output));
+        }
+        
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new DeleteExerciseSubstitutionInput(id), cancellationToken);
+            return NoContent();
         }
     }
 }

@@ -18,6 +18,20 @@ namespace GymFlex.Domain.Entities
         public Guid SubstituteExerciseId { get; private set; } = substituteExerciseId;
         public Exercise? SubstituteExercise { get; private set; }
         
+        public void Update(
+            EquivalenceLevel equivalenceLevel, 
+            string notes, 
+            Guid exerciseId, 
+            Guid substituteExerciseId
+        )
+        {
+            EquivalenceLevel = equivalenceLevel;
+            Notes = notes;
+            ExerciseId = exerciseId;
+            SubstituteExerciseId = substituteExerciseId;
+            Validate();
+        }
+        
         private void Validate()
             => DomainValidation.MaxLength(Notes, 255, nameof(Notes));
     }
