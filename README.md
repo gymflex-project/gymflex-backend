@@ -27,7 +27,6 @@ GymFlex é uma aplicação backend desenvolvida em C# focada no gerenciamento de
 
 #### 📦 Componentes Principais
 - Entidades
-- Value Objects
 - Agregados
 - Repositórios
 - Serviços de Domínio
